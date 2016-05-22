@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content="width=device-width">
+	<title></title>
+	<style type="text/css">
+	img{
+		width: 100px;
+		height: 100px;
+	}
+	</style>
+	<script type="text/javascript" src='http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js'></script>
+	<script type="text/javascript">
+		
+	   
+	</script>
+</head>
+<body>
+<button id="next">下一页</button>
+<div id="content">
+	<!-- <a href="img1.html"><img src="1.png"></a> -->
+</div>
+</body>
+<script type="text/javascript">
+	var page;
+	var imgs = ['http://vi4.6rooms.com/live/2016/04/20/00/1002v1461084954136538551_b.jpg','http://vi4.6rooms.com/live/2016/04/20/00/1002v1461084952952566974_b.jpg','http://vi4.6rooms.com/live/2016/04/20/00/1002v1461084951971473636_b.jpg','http://vi5.6rooms.com/live/2016/04/20/00/1002v1461084950671513358_b.jpg','http://vi1.6rooms.com/live/2016/04/20/00/1002v1461084949836229511_b.jpg'];
+	var url = window.location.href.split('?')[0];
+	var next = document.getElementById('next');
+	
+	load();
+	$(next).click(function () {
+		if (page > imgs.length-1){
+			return false;
+		}
+		page++;
+		push(page,true);
+	});
+	function req(n){
+		return imgs.slice(0, n);
+	}
+
+	function push(page, flag){
+		if (page == undefined){
+			history.replaceState([imgs[0]],document.title, url+"?page="+1);
+			add(1);
+		}else {
+			if (flag){
+				history.pushState(add(page),document.title, url+"?page="+page);
+			}
+			else {
+				add(page);
+			}
+			
+		}
+	}
+	
+	function load(){
+
+		var query = location.search;
+		if (query){
+			var p1 = query.split('=')[1];
+			add(p1);
+			page = p1;
+		}else {
+			history.replaceState([imgs[0]],document.title, url+"?page="+1);
+			add(1);
+			page = 1;
+		}
+
+
+	}
+
+	function add(n){
+		var data1 = req(n);
+		var p = document.getElementById('content');
+		var c = p.getElementsByTagName('a');
+		for (var i=0; i<c.length; c++){
+			while(c[i]){
+				p.removeChild(c[i]);
+			}
+		}
+		for (var i in data1){
+			var a = document.createElement('a');
+			a.href = 'img'+(1+parseInt(i))+'.html';
+			var img = document.createElement('img');
+			img.src = data1[i];
+			a.appendChild(img);
+			p.appendChild(a);
+		}
+		return data1;
+	}
+	$(window).bind('popstate', function(){
+	    	var page1 = history.state.length;
+	        push(page1);
+	        page = page1;
+	});
+	
+</script>
+</html>
