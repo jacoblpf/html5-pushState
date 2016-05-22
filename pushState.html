@@ -82,7 +82,8 @@
 		}
 		for (var i in data1){
 			var a = document.createElement('a');
-			a.href = 'img'+(1+parseInt(i))+'.html';
+			//a.href = 'img'+(1+parseInt(i))+'.html';
+			a.href = data1[i];
 			var img = document.createElement('img');
 			img.src = data1[i];
 			a.appendChild(img);
